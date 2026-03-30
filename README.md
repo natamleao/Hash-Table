@@ -207,11 +207,12 @@ KeyArrayCreate(qtd, min, max);
 ```
 Hash-Table/
 │
-├── app/             # Arquivo principais da aplicação (main)
+├── app/             # Arquivo principal da aplicação (main)
 ├── bin/             # Executáveis gerados
 ├── include/         # Arquivos de cabeçalho (.h)
 ├── build/           # Arquivos objeto (.o)
 ├── src/             # Código-fonte da aplicação (.c)
+├── lib/             # Biblioteca estática
 │
 ├── Makefile         # Regras de compilação
 ├── README.md        # Documentação do projeto
