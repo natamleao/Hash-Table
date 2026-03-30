@@ -15,15 +15,6 @@ int main(){
 
     int *keysArray = KeyArrayCreate(keysNumber, min, max);
 
-    for(int i = 0; i < 10; i++)
-        HashDivisionMethod(hash, keysArray[i]);
-
-    printf("Hash after Division Method:\n");
-    HashPrint(hash);
-
-    printf("\nDestroying hash and creating a new one for Digit Analysis Method...\n\n");
-    HashDestroy(hash);
-
     hash = HashCreateHashTable(hashCapacity);
 
     printf("Hase after Digit Analysis Method:\n");

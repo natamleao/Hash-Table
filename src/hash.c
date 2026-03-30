@@ -118,21 +118,6 @@ void HashSetSize(hashTable *hash, int value){hash->size = value;}
 void HashChangeCapacity(hashTable *hash, int delta){HashSetCapacity(hash, HashGetCapacity(hash) + delta);}
 void HashChangeSize(hashTable *hash, int delta){HashSetSize(hash, HashGetSize(hash) + delta);}
 
-void HashDivisionMethod(hashTable *hash, int value){
-    int index = ((value % HashGetCapacity(hash)) + HashGetCapacity(hash)) % HashGetCapacity(hash);
-
-    Node *node_ = NodeCreate(index, value);
-
-    if(!HashGetBuckets(hash)[index])
-        HashSetBuckets(hash, index, node_);
-    else{
-        NodeSetNextNode(node_, HashGetBuckets(hash)[index]);
-        HashSetBuckets(hash, index, node_);
-    }
-
-    HashChangeSize(hash, 1);
-}
-
 void HashCountDigits(int number, int *size){
     int temp = abs(number);
     *size = 0;

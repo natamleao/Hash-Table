@@ -115,17 +115,6 @@ void HashChangeSize(hashTable *hash, int delta);
 void HashPrint(hashTable *hash);
 
 /**
- * @brief Insere um valor no Hash usando o método da divisão.
- *
- * Calcula o índice usando a função de hash por divisão e insere o
- * valor na posição correspondente do Hash.
- *
- * @param hash Ponteiro para a estrutura do Hash.
- * @param value Valor inteiro a ser inserido no Hash.
- */
-void HashDivisionMethod(hashTable *hash, int value);
-
-/**
  * @brief Conta o número de dígitos em um número inteiro.
  *
  * Calcula quantos dígitos compõem o valor absoluto do número
