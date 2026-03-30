@@ -234,8 +234,8 @@ Hash-Table/
 Clone o repositório:
 
 ```bash
-git git@github.com:natamleao/Playlist-Manager.git
-cd Playlist-Manager
+git clone git@github.com:natamleao/Hash-Table.git
+cd Hash-Table
 ```
 
 ---
