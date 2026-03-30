@@ -11,60 +11,84 @@
 
 ## Sobre o projeto
 
-> [!NOTE]
-> Este projeto implementa uma **tabela hash em C** utilizando **encadeamento (chaining)** para tratamento de colisões.
+Este projeto implementa uma **tabela hash em C** utilizando **encadeamento (chaining)** para resolução de colisões.
 
-O diferencial aqui não é só “jogar número no bucket” — o projeto usa um **método de análise de dígitos** para tentar melhorar a distribuição das chaves.
+O diferencial está no método de hashing: ao invés de usar diretamente o valor da chave, o sistema realiza uma **análise estatística dos dígitos** das chaves antes de definir o índice.
 
-A ideia é simples:
+A ideia central é:
 
-* quebrar os números em dígitos
-* analisar a distribuição
-* escolher o dígito “mais estável”
-* usar esse dígito como base para o índice na hash
+* decompor os números em dígitos
+* analisar a distribuição desses dígitos por posição
+* calcular um “desvio” para cada posição
+* escolher a posição mais estável
+* usar esse dígito para gerar o índice da hash
 
-Ou seja: **uma tentativa de reduzir colisões com heurística**, não só força bruta.
-
----
-
-> [!IMPORTANT]
-> ## Tecnologias utilizadas
-> 
-> * **C (C11)**
-> * **GNU Make**
-> * Estruturas:
-> 
->   * **Tabela hash**
->   * **Lista encadeada (para colisões)**
+👉 Ou seja: uma **heurística baseada em distribuição**, não uma função hash fixa.
 
 ---
 
-## Conceitos aplicados
+## Como o hashing funciona (na prática)
 
-Esse projeto bate forte em fundamentos importantes:
+### 1. Quebra em dígitos
 
-* Alocação dinâmica (`malloc`, `calloc`, `free`)
-* Manipulação de ponteiros
-* Estruturas encadeadas
-* Modularização (`.h` e `.c`)
-* Separação de responsabilidades
-* Análise de distribuição de dados
-* Uso de funções como ponteiros (callback)
-* Algoritmos de embaralhamento (shuffle)
+Cada número é dividido:
+
+```
+1234 → [1, 2, 3, 4]
+```
+
+---
+
+### 2. Construção da matriz
+
+É criada uma matriz:
+
+```
+(posição do dígito) × (0–9)
+```
+
+Onde cada célula conta quantas vezes um dígito aparece naquela posição.
+
+---
+
+### 3. Cálculo de desvio
+
+Para cada posição, é calculado:
+
+* frequência ideal: `N / 10`
+* desvio baseado na distância dos dígitos
+
+Isso gera um vetor de desvios.
+
+---
+
+### 4. Escolha do melhor dígito
+
+O índice da posição com **menor desvio** é escolhido:
+
+```c
+int bestDigit = HashFindMinDeviationIndex(deviations, digitsCount);
+```
+
+---
+
+### 5. Cálculo do índice final
+
+```c
+index = digit % capacity;
+```
+
+Simples — mas agora usando o dígito mais “equilibrado”.
 
 ---
 
 ## Estrutura da Hash Table
 
-Cada bucket da tabela aponta para uma lista encadeada:
-
 ```
-Hash Table (buckets)
-
 [0] → (k,v) → (k,v)
 [1] → vazio
 [2] → (k,v)
-[3] → (k,v) → (k,v) → (k,v)
+[3] → (k,v) → (k,v)
 ...
 ```
 
@@ -80,6 +104,10 @@ struct _node{
 };
 ```
 
+* `_index`: posição na tabela
+* `_value`: valor original inserido
+* `_next`: próximo nó (lista encadeada)
+
 ---
 
 ## Estrutura da tabela hash
@@ -94,69 +122,27 @@ struct _hashTable{
 
 ---
 
-## Funcionamento do método de hashing
-
-### 1. Quebra em dígitos
-
-Cada número é decomposto:
-
-```
-123 → [1, 2, 3]
-```
-
----
-
-### 2. Matriz de distribuição
-
-O sistema conta a frequência de cada dígito (0–9) em cada posição.
-
----
-
-### 3. Cálculo de desvio
-
-É calculado o quanto cada posição de dígito “se afasta” de uma distribuição ideal.
-
----
-
-### 4. Escolha do melhor dígito
-
-Seleciona o dígito com **menor desvio** → mais equilibrado.
-
----
-
-### 5. Cálculo do índice
-
-```c
-index = digit % capacity;
-```
-
-Simples, mas agora usando o **melhor dígito possível**.
-
----
-
 ## Funcionalidades
 
-### Criar tabela hash
+### Criar tabela
 
 ```c
-HashCreateHashTable(capacity);
+hashTable* HashCreateHashTable(int capacity);
 ```
 
 ---
 
-### Inserção
-
-Inserção indireta via:
+### Inserção (via análise de dígitos)
 
 ```c
-HashDigitAnalysisMethod(...)
+HashDigitAnalysisMethod(HashCountDigits, keysArray, keysNumber, hash);
 ```
 
-Que:
+Esse método:
 
-* analisa os dados
-* decide como distribuir
-* insere automaticamente
+* analisa todas as chaves
+* define o melhor dígito
+* insere automaticamente na tabela
 
 ---
 
@@ -166,39 +152,80 @@ Que:
 HashPrint(hash);
 ```
 
-Saída exemplo:
+Saída:
 
 ```
-Bucket 0: (Chave: 3, Valor: 123)
+Bucket 0: (Chave: 0, Valor: 1234)
 Bucket 1: vazio
-Bucket 2: (Chave: 2, Valor: 456) -> (Chave: 2, Valor: 789)
+Bucket 2: (Chave: 2, Valor: 5678) -> (Chave: 2, Valor: 91011)
 ```
 
 ---
 
-### Destruição
+### Liberação de memória
 
 ```c
 HashDestroy(hash);
 ```
 
-Libera toda a memória corretamente (incluindo listas).
+Libera:
+
+* todos os nós
+* buckets
+* estrutura da hash
 
 ---
 
-## Geração de chaves
-
-O módulo `keyarray` permite gerar números únicos aleatórios:
+## Geração de chaves (KeyArray)
 
 ```c
-KeyArrayCreate(qtd, min, max);
+int* KeyArrayCreate(int keysNumber, int min, int max);
 ```
 
-### Características:
+Características:
 
-* Sem repetição
-* Distribuição aleatória (shuffle)
-* Base para testes da hash
+* valores únicos
+* distribuição aleatória (Fisher-Yates shuffle)
+* ideal para testes
+
+---
+
+## Exemplo de uso
+
+```c
+int main(){
+    srand(time(NULL));
+
+    int keysNumber = 50;
+    int min = 1000, max = 100000;
+    int hashCapacity = 15;
+
+    hashTable *hash = HashCreateHashTable(hashCapacity);
+
+    int *keysArray = KeyArrayCreate(keysNumber, min, max);
+
+    HashDigitAnalysisMethod(HashCountDigits, keysArray, keysNumber, hash);
+
+    HashPrint(hash);
+
+    HashDestroy(hash);
+    return 0;
+}
+```
+
+---
+
+## Conceitos aplicados
+
+Esse projeto trabalha forte:
+
+* ponteiros e memória dinâmica
+* listas encadeadas
+* análise de dados (distribuição)
+* modularização em C
+* heurísticas para hashing
+* manipulação de arrays multidimensionais
+* algoritmo de embaralhamento (shuffle)
 
 ---
 
