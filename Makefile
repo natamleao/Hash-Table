@@ -16,7 +16,7 @@ all: \
 libeb: \
     $(BUILD)/hash.o \
 	$(BUILD)/node.o \
-	$(BUILD)/keyarray.o
+	$(BUILD)/key_array.o
 
 myapps: \
 	cleanapp \
@@ -25,7 +25,7 @@ myapps: \
 $(BUILD)/%.o: $(SRC)/%.c $(INCLUDE)/%.h
 	gcc $(FLAGS) -c $< -I $(INCLUDE) -o $@ 
 
-$(LIB): $(BUILD)/hash.o $(BUILD)/node.o $(BUILD)/keyarray.o
+$(LIB): $(BUILD)/hash.o $(BUILD)/node.o $(BUILD)/key_array.o
 	ar rcs $@ $^
 
 $(BIN)/%: $(APPS)/%.c $(LIB)

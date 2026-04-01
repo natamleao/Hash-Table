@@ -1,5 +1,5 @@
 #include "hash.h"
-#include "keyarray.h"
+#include "key_array.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -76,7 +76,7 @@ void HashInsert(hashTable *hash, int index, int value){
     if(!newNode) return;
 
     NodeSetNextNode(newNode, HashGetBuckets(hash)[index]);
-    HashSetBuckets(hash, index, newNode);
+    HashSet(hash, index, newNode);
 }
 
 int HashComputeIndexFromDigit(int *digits, int bestDigit, int capacity){
@@ -84,9 +84,11 @@ int HashComputeIndexFromDigit(int *digits, int bestDigit, int capacity){
     return d % capacity;       
 }
 
+void HashIncrementSize(hashTable *hash){hash->size++;}
+
 /******************************************************* PUBLIC INTERFACE ********************************************************/
 
-hashTable* HashCreateHashTable(int capacity){
+hashTable* HashCreate(int capacity){
     if(capacity <= 0){
         printf("Erro: capacidade inválida!\n");
         return NULL;
@@ -101,8 +103,8 @@ hashTable* HashCreateHashTable(int capacity){
         return NULL;
     }
 
-    hash->size = 0;           
-    hash->capacity = capacity;
+    HashSetSize(hash, 0);
+    HashSetCapacity(hash, capacity);
 
     return hash;
 }
@@ -111,12 +113,9 @@ Node** HashGetBuckets(hashTable *hash){return hash->buckets;}
 int HashGetCapacity(hashTable *hash){return hash->capacity;}
 int HashGetSize(hashTable *hash){return hash->size;}
 
-void HashSetBuckets(hashTable *hash, int index, Node *node){hash->buckets[index] = node;}
+void HashSet(hashTable *hash, int index, Node *node){hash->buckets[index] = node;}
 void HashSetCapacity(hashTable *hash, int value){hash->capacity = value;}
 void HashSetSize(hashTable *hash, int value){hash->size = value;}
-
-void HashChangeCapacity(hashTable *hash, int delta){HashSetCapacity(hash, HashGetCapacity(hash) + delta);}
-void HashChangeSize(hashTable *hash, int delta){HashSetSize(hash, HashGetSize(hash) + delta);}
 
 void HashCountDigits(int number, int *size){
     int temp = abs(number);
@@ -163,6 +162,8 @@ void HashDigitAnalysisMethod(void (*function)(int number, int *size), int *index
 
         HashInsert(hash, index, indexsArray[i]);
     }
+
+    HashIncrementSize(hash);
 }
 
 void HashPrint(hashTable *hash) {

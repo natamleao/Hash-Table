@@ -16,7 +16,7 @@ typedef struct _hashTable hashTable;
  * @param capacity Capacidade máxima que o Hash deve ter (>= array_size).
  * @return Ponteiro para o Hash alocado, ou NULL se falhar.
  */
-hashTable* HashCreateHashTable(int capacity);
+hashTable* HashCreate(int capacity);
 
 /**
  * @brief Retorna o vetor interno de dados do Hash.
@@ -57,7 +57,7 @@ int HashGetSize(hashTable *hash);
  * @param index Índice do elemento a ser alterado (0 a size-1).
  * @param value Novo valor a ser colocado nessa posição.
  */
-void HashSetBuckets(hashTable *hash, int index, Node *node);
+void HashSet(hashTable *hash, int index, Node *node);
 
 /**
  * @brief Ajusta a capacidade do Hash.
@@ -78,28 +78,6 @@ void HashSetCapacity(hashTable *hash, int value);
  * @param value Valor a ser adicionado ao tamanho.
  */
 void HashSetSize(hashTable *hash, int value);
-
-/**
- * @brief Altera a capacidade do Hash em uma quantidade específica.
- *
- * Incrementa ou decrementa o campo `capacity` da estrutura do Hash
- * de acordo com o valor de `delta`. Pode ser positivo (aumenta) ou
- * negativo (diminui).
- *
- * @param hash Ponteiro para a estrutura do Hash.
- * @param delta Valor a ser adicionado ao campo capacity.
- */
-void HashChangeCapacity(hashTable *hash, int delta);
-
-/**
- * @brief Altera o tamanho atual do Hash em uma quantidade específica.
- *
- * Incrementa ou decrementa o campo `size` de acordo com o valor de `delta`.
- *
- * @param hash Ponteiro para a estrutura do Hash.
- * @param delta Valor a ser adicionado ao campo size.
- */
-void HashChangeSize(hashTable *hash, int delta);
 
 /**
  * @brief Imprime todos os elementos do Hash no console.

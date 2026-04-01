@@ -1,4 +1,4 @@
-# Hash Table com Análise de Dígitos em C
+# *Hash Table* com Análise de Dígitos em C
 
 ![Language](https://img.shields.io/badge/language-C-blue)
 ![Standard](https://img.shields.io/badge/standard-C11-orange)
@@ -11,30 +11,32 @@
 
 ## Sobre o projeto
 
-Este projeto implementa uma **tabela hash em C** utilizando **encadeamento (chaining)** para resolução de colisões.
+Este projeto implementa uma *tabela hash* em C utilizando *encadeamento* (*chaining*) para resolução de colisões.
 
-O diferencial está no método de hashing: ao invés de usar diretamente o valor da chave, o sistema realiza uma **análise estatística dos dígitos** das chaves antes de definir o índice.
+O diferencial está no método de *hashing*: ao invés de usar diretamente o valor da chave, o sistema realiza uma **análise estatística dos dígitos** das chaves antes de definir o índice.
 
 A ideia central é:
 
-* decompor os números em dígitos
-* analisar a distribuição desses dígitos por posição
-* calcular um “desvio” para cada posição
-* escolher a posição mais estável
-* usar esse dígito para gerar o índice da hash
+* decompor os números em dígitos  
+* analisar a distribuição desses dígitos por posição  
+* calcular um “desvio” para cada posição  
+* escolher a posição mais estável  
+* usar esse dígito para gerar o índice da *hash*  
 
-👉 Ou seja: uma **heurística baseada em distribuição**, não uma função hash fixa.
+Ou seja: uma **heurística baseada em distribuição**, não uma função de *hash* fixa.
 
 ---
 
-## Como o hashing funciona (na prática)
+## Como o *hashing* funciona (na prática)
 
 ### 1. Quebra em dígitos
 
 Cada número é dividido:
 
 ```
+
 1234 → [1, 2, 3, 4]
+
 ```
 
 ---
@@ -44,8 +46,10 @@ Cada número é dividido:
 É criada uma matriz:
 
 ```
+
 (posição do dígito) × (0–9)
-```
+
+````
 
 Onde cada célula conta quantas vezes um dígito aparece naquela posição.
 
@@ -55,8 +59,8 @@ Onde cada célula conta quantas vezes um dígito aparece naquela posição.
 
 Para cada posição, é calculado:
 
-* frequência ideal: `N / 10`
-* desvio baseado na distância dos dígitos
+* frequência ideal: `N / 10`  
+* desvio baseado na distância dos dígitos  
 
 Isso gera um vetor de desvios.
 
@@ -68,7 +72,7 @@ O índice da posição com **menor desvio** é escolhido:
 
 ```c
 int bestDigit = HashFindMinDeviationIndex(deviations, digitsCount);
-```
+````
 
 ---
 
@@ -82,7 +86,7 @@ Simples — mas agora usando o dígito mais “equilibrado”.
 
 ---
 
-## Estrutura da Hash Table
+## Estrutura da *Hash Table*
 
 ```
 [0] → (k,v) → (k,v)
@@ -106,11 +110,11 @@ struct _node{
 
 * `_index`: posição na tabela
 * `_value`: valor original inserido
-* `_next`: próximo nó (lista encadeada)
+* `_next`: próximo nó (*lista encadeada*)
 
 ---
 
-## Estrutura da tabela hash
+## Estrutura da tabela *hash*
 
 ```c
 struct _hashTable{
@@ -171,12 +175,12 @@ HashDestroy(hash);
 Libera:
 
 * todos os nós
-* buckets
-* estrutura da hash
+* *buckets*
+* estrutura da *hash*
 
 ---
 
-## Geração de chaves (KeyArray)
+## Geração de chaves (*KeyArray*)
 
 ```c
 int* KeyArrayCreate(int keysNumber, int min, int max);
@@ -185,7 +189,7 @@ int* KeyArrayCreate(int keysNumber, int min, int max);
 Características:
 
 * valores únicos
-* distribuição aleatória (Fisher-Yates shuffle)
+* distribuição aleatória (*Fisher-Yates shuffle*)
 * ideal para testes
 
 ---
@@ -223,9 +227,9 @@ Esse projeto trabalha forte:
 * listas encadeadas
 * análise de dados (distribuição)
 * modularização em C
-* heurísticas para hashing
-* manipulação de arrays multidimensionais
-* algoritmo de embaralhamento (shuffle)
+* heurísticas para *hashing*
+* manipulação de *arrays* multidimensionais
+* algoritmo de embaralhamento (*shuffle*)
 
 ---
 
@@ -242,11 +246,14 @@ Hash-Table/
 ├── lib/             # Biblioteca estática
 │
 ├── Makefile         # Regras de compilação
-├── README.md        # Documentação do projeto
-└── LICENSE          # Licença do projeto
+├── README.md        # Documentação
+└── LICENSE          # Licença
 ```
 
+---
+
 > [!IMPORTANT]
+>
 > ## Requisitos
 >
 > Para compilar e executar o projeto é necessário:
@@ -259,8 +266,6 @@ Hash-Table/
 
 ## Instalação
 
-Clone o repositório:
-
 ```bash
 git clone git@github.com:natamleao/Hash-Table.git
 cd Hash-Table
@@ -270,8 +275,6 @@ cd Hash-Table
 
 ## Compilação
 
-Compile o projeto com:
-
 ```bash
 make
 ```
@@ -279,8 +282,6 @@ make
 ---
 
 ## Execução
-
-Execute o programa com:
 
 ```bash
 make run
@@ -290,8 +291,6 @@ make run
 
 ## Limpeza do projeto
 
-Remover arquivos compilados:
-
 ```bash
 make clean
 make cleanapp
@@ -300,6 +299,7 @@ make cleanapp
 ---
 
 > [!WARNING]
+>
 > ## Licença
 >
 > Este projeto está licenciado sob a **Licença MIT**.

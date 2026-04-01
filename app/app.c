@@ -1,5 +1,5 @@
 #include "hash.h"
-#include "keyarray.h"
+#include "key_array.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -11,11 +11,11 @@ int main(){
     int min = 1000, max = 100000;
     int hashCapacity = 15;
 
-    hashTable *hash = HashCreateHashTable(hashCapacity);
+    hashTable *hash = HashCreate(hashCapacity);
 
     int *keysArray = KeyArrayCreate(keysNumber, min, max);
 
-    hash = HashCreateHashTable(hashCapacity);
+    hash = HashCreate(hashCapacity);
 
     printf("Hase after Digit Analysis Method:\n");
 
