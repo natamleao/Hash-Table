@@ -239,7 +239,7 @@ Esse projeto trabalha forte:
 Hash-Table/
 │
 ├── app/             # Arquivo principal da aplicação (main)
-├── bin/             # Executáveis gerados
+├── bin/             # Executável gerado
 ├── include/         # Arquivos de cabeçalho (.h)
 ├── build/           # Arquivos objeto (.o)
 ├── src/             # Código-fonte da aplicação (.c)
