@@ -1,4 +1,4 @@
-# *Hash Table* com Análise de Dígitos em C
+# *Hash Table* com Análise de Dígitos 
 
 ![Language](https://img.shields.io/badge/language-C-blue)
 ![Standard](https://img.shields.io/badge/standard-C11-orange)
