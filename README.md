@@ -9,21 +9,20 @@
 
 ---
 
-## Sobre o projeto
+Sobre o projeto
 
-Este projeto implementa uma *tabela hash* em C utilizando *encadeamento* (*chaining*) para resolução de colisões.
+Este projeto implementa uma tabela *hash* em C utilizando encadeamento (*chaining*) para resolução de colisões.
 
-O diferencial está no método de *hashing*: ao invés de usar diretamente o valor da chave, o sistema realiza uma **análise estatística dos dígitos** das chaves antes de definir o índice.
+O foco não está na estrutura em si, mas na exploração de uma estratégia de *hashing* baseada em análise de dígitos — uma abordagem conhecida, mas aqui implementada de forma explícita e experimental.
 
-A ideia central é:
+A ideia é simples:
 
-* decompor os números em dígitos  
-* analisar a distribuição desses dígitos por posição  
-* calcular um “desvio” para cada posição  
-* escolher a posição mais estável  
-* usar esse dígito para gerar o índice da *hash*  
+decompor os números em dígitos
+analisar a distribuição dos dígitos por posição
+identificar a posição mais “estável” estatisticamente
+usar essa informação para definir o índice na tabela
 
-Ou seja: uma **heurística baseada em distribuição**, não uma função de *hash* fixa.
+Ou seja, em vez de uma função de *hash* fixa, o projeto usa uma heurística baseada nos dados de entrada.
 
 ---
 
@@ -221,7 +220,7 @@ int main(){
 
 ## Conceitos aplicados
 
-Esse projeto trabalha forte:
+Esse projeto trabalha:
 
 * ponteiros e memória dinâmica
 * listas encadeadas
