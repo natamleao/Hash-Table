@@ -301,7 +301,7 @@ make cleanapp
 >
 > ## Licença
 >
-> Este projeto está licenciado sob a **Licença MIT**.
+> Este projeto está sob a **Licença MIT**.
 
 ---
 
